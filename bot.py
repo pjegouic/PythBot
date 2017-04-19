@@ -18,7 +18,7 @@ def webhook_get():
         return 'Error, Wrong Token'
 
 
-@app.route('/webhooks/', methods=['POST'])
+@app.route('/webhooks', methods=['POST'])
 def webhook_post():
     sys.stderr.write(request.data[0].messaging)
     messaging_events = request.data[0].messaging
