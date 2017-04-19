@@ -15,7 +15,7 @@ def webhook_get():
     if request.args.get('hub.verify_token') == 'TOTO':
         return request.args.get('hub.challenge')
     else:
-        return request.args.get('Error, Wrong Token')
+        return 'Error, Wrong Token'
 
 
 @app.route('/webhooks/', methods=['POST'])
@@ -50,7 +50,7 @@ def sendTextMessage(sender, text):
     header = {'Authorization' : 'access_token ' + FB_TOKEN}
     json = {'recipient' : {'id':sender}, 'message': messageData}
     try:
-        response = requests.post(fb_url, header=header,json=json)
+        response = requests.post(fb_url, header=header, json=json)
     except requests.exceptions.RequestException as e:
         logging.error('Error sending message : ' + e)
 
