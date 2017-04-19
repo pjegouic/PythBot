@@ -56,7 +56,7 @@ def sendTextMessage(sender, text):
         logging.error('Error sending message : ' + e)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=process.env.PORT)
 
 actions = {
     'send': send,
