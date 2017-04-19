@@ -3,7 +3,7 @@ from flask import Flask,request, make_response
 import logging
 import requests
 import json
-import sys
+import sys, os
 
 
 # Definition des constantes
@@ -56,7 +56,7 @@ def sendTextMessage(sender, text):
         logging.error('Error sending message : ' + e)
 
 if __name__ == '__main__':
-    app.run(port=process.env.PORT)
+    app.run(port=os.environ['PORT'])
 
 actions = {
     'send': send,
