@@ -1,4 +1,4 @@
-from wit import Wit
+#from wit import Wit
 from flask import Flask,request, make_response
 import logging
 import requests
@@ -10,7 +10,7 @@ import sys
 app = Flask(__name__)
 WIT_ACCESS_TOKEN = '45O73DNGA4W6YBPS3GXJXAPTZK725XXE'
 
-@app.route ('/webhook/', methods=['GET'])
+@app.route ('/webhooks/', methods=['GET'])
 def webhook_get():
     sys.stderr.write('Verify Token ' + request.args.get('hub.verify_token'))
     if request.args.get('hub.verify_token') == 'TOTO':
@@ -19,7 +19,7 @@ def webhook_get():
         return request.args.get('Error, Wrong Token')
 
 
-@app.route('/webhook/', methods=['POST'])
+@app.route('/webhooks/', methods=['POST'])
 def webhook_post():
     print(request.data[0].messaging)
     messaging_events = request.data[0].messaging
@@ -63,4 +63,4 @@ actions = {
     'my_action': my_action,
 }
 
-client = Wit(access_token=WIT_ACCESS_TOKEN, actions=actions)
+#client = Wit(access_token=WIT_ACCESS_TOKEN, actions=actions)
