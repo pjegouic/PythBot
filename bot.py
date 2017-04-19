@@ -24,6 +24,7 @@ def webhook_post():
     messaging_events = req['entry'][0]['messaging']
     for i in range(len(messaging_events)):
         event = req['entry'][0]['messaging'][i]
+        sys.stdout.write(str(event))
         sender = event['sender']['id']
         if event['message'] and event['message']['text']:
             text = event['message']['text']
