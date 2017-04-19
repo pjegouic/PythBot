@@ -29,7 +29,7 @@ def webhook_post():
         if event.message and event.message.text:
             text = event.message.text
             if text == 'Generic' :
-                sys.stderr.write(('Welcome to PythBot')
+                sys.stderr.write('Welcome to PythBot')
                 #sendGenericMessage(sender)
                 continue
             sendTextMessage(sender, "Text received, echo : " + text)
@@ -57,6 +57,7 @@ def sendTextMessage(sender, text):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=os.environ['PORT'])
+
 
 actions = {
     'send': send,
