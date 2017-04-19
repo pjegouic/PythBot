@@ -29,7 +29,6 @@ def webhook_post():
             text = event.message.text
             if text == 'Generic' :
                 sys.stderr.write('Welcome to PythBot')
-                #sendGenericMessage(sender)
                 continue
             sendTextMessage(sender, "Text received, echo : " + text)
         if event.postback :
