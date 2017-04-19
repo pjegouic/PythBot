@@ -21,9 +21,9 @@ def webhook_get():
 @app.route('/webhooks', methods=['POST'])
 def webhook_post():
     sys.stderr.write(request.data)
-    messaging_events = request.entry[0].messaging
+    messaging_events = request.data.entry[0].messaging
     for i in messaging_events :
-        event = request.entry[0].messaging[i]
+        event = request.data..entry[0].messaging[i]
         sender = event.sender.id
         if event.message and event.message.text:
             text = event.message.text
