@@ -22,6 +22,7 @@ def webhook_get():
 def webhook_post():
     sys.stderr.write(request.data)
     req = json.loads(request.data)
+    sys.stdout.write(req)
     messaging_events = req.entry[0].messaging
     for i in messaging_events :
         event = req.entry[0].messaging[i]
