@@ -29,13 +29,13 @@ def webhook_post():
         if event.message and event.message.text:
             text = event.message.text
             if text == 'Generic' :
-                logging.info('Welcome to PythBot')
+                sys.stderr.write(('Welcome to PythBot')
                 #sendGenericMessage(sender)
                 continue
             sendTextMessage(sender, "Text received, echo : " + text)
         if event.postback :
             text = json.loads(event.postback)
-            sendTextMessage(sender, "Text received, echo : " + text, token)
+            sendTextMessage(sender, "Text received, echo : " + text, FB_TOKEN)
             continue
     return 200
 
