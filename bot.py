@@ -59,9 +59,5 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=os.environ['PORT'])
 
 
-actions = {
-    'send': send,
-    'my_action': my_action,
-}
 
 #client = Wit(access_token=WIT_ACCESS_TOKEN, actions=actions)
