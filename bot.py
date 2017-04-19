@@ -21,11 +21,7 @@ def webhook_get():
 @app.route('/webhooks', methods=['POST'])
 def webhook_post():
     req = json.loads(request.data)
-    reqType = type(req['entry'][0])
-    reqContent = str(req['entry'][0])
-    sys.stdout.write(str(type(req['entry'][0]['messaging'])))
     messaging_events = req['entry'][0]['messaging']
-
     for i in range(len(messaging_events)):
         event = req['entry'][0]['messaging'][i]
         sender = event['sender']['id']
@@ -53,7 +49,7 @@ def sendTextMessage(sender, text):
     header = {'Authorization' : 'access_token ' + FB_TOKEN}
     json = {'recipient' : {'id':sender}, 'message': messageData}
     try:
-        response = requests.post(fb_url, header=header, json=json)
+        response = requests.post(fb_url, headers=header, json=json)
     except requests.exceptions.RequestException as e:
         logging.error('Error sending message : ' + e)
 
