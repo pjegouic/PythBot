@@ -1,12 +1,12 @@
 from wit import Wit
-from flask import Flask, make_response
+from flask import Flask
 import logging
 import requests
 import json
 
 
 # Definition des constantes
-app = Flash(__name__)
+app = Flask(__name__)
 WIT_ACCESS_TOKEN = '45O73DNGA4W6YBPS3GXJXAPTZK725XXE'
 
 @app.route ('/webhook/', method=['GET'])
