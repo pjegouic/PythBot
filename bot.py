@@ -12,7 +12,6 @@ WIT_ACCESS_TOKEN = '45O73DNGA4W6YBPS3GXJXAPTZK725XXE'
 
 @app.route ('/webhooks/', methods=['GET'])
 def webhook_get():
-    sys.stderr.write('Verify Token ' + request.args.get('hub.verify_token'))
     if request.args.get('hub.verify_token') == 'TOTO':
         return request.args.get('hub.challenge')
     else:
