@@ -22,9 +22,9 @@ def webhook_get():
 def webhook_post():
     sys.stderr.write(request.data)
     req = json.loads(request.data)
-    messaging_events = req.data.entry[0].messaging
+    messaging_events = req.entry[0].messaging
     for i in messaging_events :
-        event = req.data.entry[0].messaging[i]
+        event = req.entry[0].messaging[i]
         sender = event.sender.id
         if event.message and event.message.text:
             text = event.message.text
@@ -56,7 +56,6 @@ def sendTextMessage(sender, text):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=os.environ['PORT'])
-
 
 
 #client = Wit(access_token=WIT_ACCESS_TOKEN, actions=actions)
