@@ -24,8 +24,8 @@ def webhook_post():
     req = json.loads(request.data)
     reqType = type(req)
     reqContent = str(req)
-    sys.stderr.write(reqType)
-    sys.stderr.write(reqContent)
+    sys.stderr.write(str(reqType))
+    sys.stderr.write(str(reqContent))
     messaging_events = req['entry'][0].messaging
     for i in messaging_events :
         event = req['entry'][0].messaging[i]
