@@ -32,7 +32,7 @@ def webhook_post():
                 sys.stderr.write('Welcome to PythBot')
                 continue
             sendTextMessage(sender, "Text received, echo : " + text)
-        if event['postback'] is not None :
+        if 'postback' in event :
             text = json.loads(event.postback)
             sendTextMessage(sender, "Text received, echo : " + text, FB_TOKEN)
             continue
