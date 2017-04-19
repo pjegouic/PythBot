@@ -27,10 +27,10 @@ def webhook_post():
     sys.stdout.write(str(reqType))
     sys.stdout.write('CONTENU DE ENTRY')
     sys.stdout.write(str(reqContent))
-    messaging_events = req['entry'][0].messaging
+    messaging_events = req['entry'][0]['messaging']
     for i in messaging_events :
-        event = req['entry'][0].messaging[i]
-        sender = event.sender.id
+        event = req['entry'][0]['messaging'][i]
+        sender = event['sender']['id']
         if event.message and event.message.text:
             text = event.message.text
             if text == 'Generic' :
