@@ -30,10 +30,10 @@ def webhook_post():
         sender = event['sender']['id']
         if event['message'] and event['message']['text']:
             text = event['message']['text']
-            sendTextMessage(sender, "Je suis en cours de développement, les fonctionnalités arriveront très vite")
+            sendTextMessage(sender, "Text received, echo : " + text)
         if 'postback' in event :
             text = json.loads(event.postback)
-            sendTextMessage(sender, "Je suis en cours de développement, les fonctionnalités arriveront très vite", FB_TOKEN)
+            sendTextMessage(sender, "Text received, echo : " + text, FB_TOKEN)
             continue
     return json.dumps(None,200,{'ContentType' : 'application/json'})
 
