@@ -36,7 +36,7 @@ def webhook_post():
             text = json.loads(event.postback)
             sendTextMessage(sender, "Text received, echo : " + text, FB_TOKEN)
             continue
-    return 200
+    return requests.status_codes._codes[200]
 
 
 #FACEBOOK PART
