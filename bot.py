@@ -50,7 +50,7 @@ fb_url = 'https://graph.facebook.com/v2.6/me/messages'
 
 def sendTextMessage(sender, text):
     messageData = {'text':text}
-    header = {'Authorization' : 'access_token ' + FB_TOKEN}
+    header = {'Authorization' : 'access_token ' + FB_TOKEN, 'ContentType' : 'application/json'}
     json = {'recipient' : {'id':sender}, 'message': messageData}
     try:
         response = requests.post(fb_url, headers=header, json=json)
