@@ -15,3 +15,11 @@ def converse(sender,payload):
     response = request.converse_text(payload)
     return response.raw
 
+def bot(payload):
+  connect = recastai.Connect(token=RECAST_TOKEN, language='fr')
+  request = recastai.Request(token=RECAST_TOKEN)
+  message = connect.parse_message(payload)
+  response = request.converse_text(message.content, conversation_token=message.sender_id)
+  replies = [{'type': 'text', 'content': r} for r in response.replies]
+  connect.send_message(replies, message.conversation_id)
+  return jsonify(status=200)

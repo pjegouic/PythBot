@@ -4,7 +4,7 @@ import requests
 import json
 import sys, os
 import recastai
-import bot
+from bot import bot
 import fbconnector
 
 
@@ -39,7 +39,12 @@ def webhook_post():
             continue
     return json.dumps(None,200,{'ContentType' : 'application/json'})
 
+@app.route('/', methods=['POST'])
+def recast_connector():
+    bot(request)
+
 
 if __name__ == '__main__':
-    port = os.environ['PORT'] or 5000
+    #port = os.environ['PORT']
+    port = 5000
     app.run(host='0.0.0.0', port=port)
