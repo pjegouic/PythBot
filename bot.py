@@ -65,7 +65,7 @@ def sendRichTextMessage(sender):
 				'template_type': 'generic',
 			    'elements': [{
 					'title': 'Une pomme',
-				    'subtitle': 'Variété Golden',
+				    'subtitle': 'Variete Golden',
 				    'image_url': 'https://fridg-front.s3.amazonaws.com/media/products/pomme_golden.jpg',
 				    'buttons': [{
 					    'type': 'web_url',
