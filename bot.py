@@ -9,6 +9,7 @@ import sys, os
 # Definition des constantes
 app = Flask(__name__)
 WIT_ACCESS_TOKEN = '45O73DNGA4W6YBPS3GXJXAPTZK725XXE'
+HTTP_OK = 200
 
 @app.route ('/webhooks/', methods=['GET'])
 def webhook_get():
@@ -36,7 +37,7 @@ def webhook_post():
             text = json.loads(event.postback)
             sendTextMessage(sender, "Text received, echo : " + text, FB_TOKEN)
             continue
-    return requests.status_codes._codes[200]
+    return HTTP_OK
 
 
 #FACEBOOK PART
