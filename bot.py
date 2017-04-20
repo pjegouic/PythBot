@@ -107,15 +107,9 @@ LANGUAGE = 'fr'
 PORT = '5000'
 
 def recast(sender,payload):
-    connect = recastai.Connect(token=RECAST_TOKEN, language=LANGUAGE)
     request = recastai.Request(token=RECAST_TOKEN)
-    message = payload
-    response = request.converse_text(message, conversation_token = sender)
-    sys.stdout.write("RECAST RESPONSE : " + str(response))
-    sys.stdout.close
-    replies = [{'type' : 'text', 'content' : r} for r in response.replies]
-    connect.send_message(replies,sender)
-    return json.dumps(None,200,{'ContentType' : 'application/json'})
+    response = request.analyse_text(payload)
+    sendSimpleTextMessage(sender,str(response))
 
 
 if __name__ == '__main__':
