@@ -53,7 +53,7 @@ def sendTextMessage(sender, text):
     header = {'Authorization' : 'access_token ' + FB_TOKEN, 'ContentType' : 'application/json'}
     json = {'recipient' : {'id':sender}, 'message': messageData}
     try:
-        response = requests.post(fb_url, headers=header, json=json)
+        response = requests.post(fb_url, headers=header, data=json)
         sys.stdout.write(str(response.text))
     except requests.exceptions.RequestException as e:
         logging.error('Error sending message : ' + e)
@@ -63,3 +63,5 @@ if __name__ == '__main__':
 
 
 #client = Wit(access_token=WIT_ACCESS_TOKEN, actions=actions)
+
+
