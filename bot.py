@@ -33,10 +33,8 @@ def webhook_post():
             text = event['message']['text']
             if text == 'richtext':
                 sendRichTextMessage(sender)
-            elif text == 'recast':
-                recast(sender,text)
             else:
-                sendSimpleTextMessage(sender, "En cours de developpement. echo event.text : " + text)
+                recast(sender,text)
         if 'postback' in event :
             text = event['postback']['payload']
             sendSimpleTextMessage(sender, "En cours de developpement. echo event.text : " + text)
@@ -109,7 +107,7 @@ PORT = '5000'
 def recast(sender,payload):
     request = recastai.Request(token=RECAST_TOKEN)
     response = request.analyse_text(payload)
-    sendSimpleTextMessage(sender,str(response.source) + str(response.intents))
+    sendSimpleTextMessage(sender,"TEXT INPUT SOURCE : " + str(response.source) + "\n" + "RESULTAT ANALYSE RECAST" +str(response.intents))
 
 
 if __name__ == '__main__':
