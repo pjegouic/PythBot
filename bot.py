@@ -109,7 +109,7 @@ PORT = '5000'
 def recast(sender,payload):
     request = recastai.Request(token=RECAST_TOKEN)
     response = request.analyse_text(payload)
-    sendSimpleTextMessage(sender,str(response))
+    sendSimpleTextMessage(sender,str(response.source) + str(response.intents))
 
 
 if __name__ == '__main__':
