@@ -4,6 +4,7 @@ import logging
 import requests
 import json
 import sys, os
+import recastai
 
 
 # Definition des constantes
@@ -27,6 +28,7 @@ def webhook_post():
     for i in range(len(messaging_events)):
         event = req['entry'][0]['messaging'][i]
         sys.stdout.write(str(event))
+        sys.stdout.close
         sender = event['sender']['id']
         if 'message' in event and 'text' in event['message']:
             text = event['message']['text']
@@ -58,7 +60,7 @@ def sendSimpleTextMessage(sender, text):
         sys.stderr.write(('Error sending message : ' + e))
 
 
-def sendRichTextMessage(sender):
+def sendRichTextMessage(sender, payload):
     messagedata = {
 	    'attachment': {
 		    'type': 'template',
@@ -95,14 +97,27 @@ def sendRichTextMessage(sender):
         response = requests.post(fb_url, headers=HEADER, json=json)
     except requests.HTTPError as e:
         sys.stderr.write(('Error sending message : ' + e))
+        sys.stderr.close
 
+# RECAST.AI PART
 
+RECAST_TOKEN = '1bce061fbb05eb4b99ca5588832cb9d7'
+LANGUAGE = 'fr'
+PORT = '5000'
+
+def recast(payload):
+    connect = recastai.Connect(token=RECAST_TOKEN, language=LANGUAGE)
+    request = recastai.Request(token=RECAST_TOKEN)
+
+    message = connect.parse_message(payload)
+    response = request.converse_text(message.content, conversation_token = message.sender_id)
+    sys.stdout.write(str(response))
+    sys.stdout.close
+    replies = [{'type' : 'text', 'content' : r} for r in response.replies]
+    connect.send_message(replies,message.conversation_id)
+    return json.dumps(None,200,{'ContentType' : 'application/json'})
 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=os.environ['PORT'])
-
-
-#client = Wit(access_token=WIT_ACCESS_TOKEN, actions=actions)
-
 

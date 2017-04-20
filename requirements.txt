@@ -1,2 +1,3 @@
 Flask == 0.11
 requests == 2.13.0
+recastai == 3.0.0
