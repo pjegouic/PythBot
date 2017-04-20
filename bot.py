@@ -33,10 +33,10 @@ def webhook_post():
             if text == 'richtext' :
                 sendRichTextMessage(sender)
             else:
-                sendSimpleTextMessage(sender, "En cours de développement. echo event.text : " + text)
+                sendSimpleTextMessage(sender, "En cours de developpement. echo event.text : " + text)
         if 'postback' in event :
             text = json.loads(event.postback)
-            sendSimpleTextMessage(sender, "En cours de développement. echo event.text : " + text)
+            sendSimpleTextMessage(sender, "En cours de developpement. echo event.text : " + text)
             continue
     return json.dumps(None,200,{'ContentType' : 'application/json'})
 
