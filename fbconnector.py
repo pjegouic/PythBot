@@ -10,12 +10,9 @@ HEADER = {'ContentType' : 'application/json'}
 
 def prepare_response(recipient_id, message):
     payload = {
-        'recipient' : {'id' : recipient_id}
+        'recipient': {'id': recipient_id},
+        'message': {'text': message}
         }
-    message = {
-        'text' : message
-    }
-    payload.message = message
     return payload
 
 def parse_from_facebook(body):
