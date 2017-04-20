@@ -111,10 +111,10 @@ def recast(sender,payload):
     request = recastai.Request(token=RECAST_TOKEN)
     message = payload
     response = request.converse_text(message, conversation_token = sender)
-    sys.stdout.write(str(response))
+    sys.stdout.write("RECAST RESPONSE : " + str(response))
     sys.stdout.close
     replies = [{'type' : 'text', 'content' : r} for r in response.replies]
-    connect.send_message(replies,message.conversation_id)
+    connect.send_message(replies,sender)
     return json.dumps(None,200,{'ContentType' : 'application/json'})
 
 
