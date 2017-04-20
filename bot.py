@@ -28,7 +28,7 @@ def webhook_post():
         event = req['entry'][0]['messaging'][i]
         sys.stdout.write(str(event))
         sender = event['sender']['id']
-        if event['message'] and event['message']['text']:
+        if 'message' in event and 'text' in event['message']:
             text = event['message']['text']
             sendTextMessage(sender, "Text received, echo : " + text)
         if 'postback' in event :
