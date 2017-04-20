@@ -45,15 +45,15 @@ def webhook_post():
 #FACEBOOK PART
 
 FB_TOKEN = 'EAAD7Jwopoh4BAJ20sPZCt9ZC2Pl7ZCQmZAcVjRKBGs26g4v8uS26hymdknQwv4PBQOjn8ZAKX93lCVpuWulMnmzMtUdhn3puUpnT0iCZCra3H8RgBdN7UZBvBcE7jtPurDn9tsPvkH93I3aM3MWyXRA08IR6imLm48QHhanAB3PhwZDZD'
-fb_url = 'https://graph.facebook.com/v2.6/me/messages'
+fb_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' + FB_TOKEN
 
 
 def sendTextMessage(sender, text):
     messageData = {'text':text}
-    header = {'Authorization' : 'access_token ' + FB_TOKEN, 'ContentType' : 'application/json'}
+    header = {'ContentType' : 'application/json'}
     json = {'recipient' : {'id':sender}, 'message': messageData}
     try:
-        response = requests.post(fb_url, headers=header, data=json)
+        response = requests.post(fb_url, headers=header, json=json)
         sys.stdout.write(str(response.text))
     except requests.exceptions.RequestException as e:
         logging.error('Error sending message : ' + e)
