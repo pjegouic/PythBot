@@ -35,7 +35,6 @@ def webhook_post():
             else:
                 sendSimpleTextMessage(sender, "En cours de developpement. echo event.text : " + text)
         if 'postback' in event :
-            text = json.loads(event.postback)
             sendSimpleTextMessage(sender, "En cours de developpement. echo event.text : " + text)
             continue
     return json.dumps(None,200,{'ContentType' : 'application/json'})
@@ -65,26 +64,26 @@ def sendRichTextMessage(sender):
 		    'payload': {
 				'template_type': 'generic',
 			    'elements': [{
-					'title': 'First card',
-				    'subtitle': 'Element #1 of an hscroll',
-				    'image_url': 'http://messengerdemo.parseapp.com/img/rift.png',
+					'title': 'Une pomme',
+				    'subtitle': 'Variété Golden',
+				    'image_url': 'https://fridg-front.s3.amazonaws.com/media/products/pomme_golden.jpg',
 				    'buttons': [{
 					    'type': 'web_url',
-					    'url': 'https://www.messenger.com',
-					    'title': 'web url'
+					    'url': 'http://lescomptoirs.com',
+					    'title': 'Les Comptoirs'
 				    }, {
 					    'type': 'postback',
 					    'title': 'Postback',
-					    'payload': 'Payload for first element in a generic bubble',
+					    'payload': 'Postback Apple payload',
 				    }],
 			    }, {
-				    'title': 'Second card',
-				    'subtitle': 'Element #2 of an hscroll',
-				    'image_url': 'http://messengerdemo.parseapp.com/img/gearvr.png',
+				    'title': 'Une banane',
+				    'subtitle': 'Banana',
+				    'image_url': 'https://www.topsante.com/var/topsante/storage/images/medecine/troubles-cardiovasculaires/avc/prevenir/avc-une-banane-par-jour-peut-reduire-le-risque-31817/207515-3-fre-FR/AVC-une-banane-par-jour-peut-reduire-le-risque.jpg',
 				    'buttons': [{
 					    'type': 'postback',
 					    'title': 'Postback',
-					    'payload': 'Payload for second element in a generic bubble',
+					    'payload': 'Postback Banana payload',
 				    }],
 			    }]
 		    }
