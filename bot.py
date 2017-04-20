@@ -110,8 +110,8 @@ def recast(payload):
     connect = recastai.Connect(token=RECAST_TOKEN, language=LANGUAGE)
     request = recastai.Request(token=RECAST_TOKEN)
 
-    message = connect.parse_message(payload)
-    response = request.converse_text(message.content, conversation_token = message.sender_id)
+    message = payload
+    response = request.converse_text(message, conversation_token = message.sender_id)
     sys.stdout.write(str(response))
     sys.stdout.close
     replies = [{'type' : 'text', 'content' : r} for r in response.replies]
