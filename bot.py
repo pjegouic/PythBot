@@ -35,7 +35,7 @@ def webhook_post():
             else:
                 sendSimpleTextMessage(sender, "En cours de developpement. echo event.text : " + text)
         if 'postback' in event :
-            text = event['message']['text']
+            text = event['postback']['payload']
             sendSimpleTextMessage(sender, "En cours de developpement. echo event.text : " + text)
             continue
     return json.dumps(None,200,{'ContentType' : 'application/json'})
