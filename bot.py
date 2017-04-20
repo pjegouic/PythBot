@@ -54,6 +54,7 @@ def sendTextMessage(sender, text):
     json = {'recipient' : {'id':sender}, 'message': messageData}
     try:
         response = requests.post(fb_url, headers=header, json=json)
+        sys.stdout.write(str(response))
     except requests.exceptions.RequestException as e:
         logging.error('Error sending message : ' + e)
 
