@@ -22,6 +22,7 @@ def webhook_get():
 @app.route('/webhooks', methods=['POST'])
 def webhook_post():
     req = json.loads(request.data)
+    response = make_response()
     messaging_events = req['entry'][0]['messaging']
     for i in range(len(messaging_events)):
         event = req['entry'][0]['messaging'][i]
@@ -37,7 +38,8 @@ def webhook_post():
             text = json.loads(event.postback)
             sendTextMessage(sender, "Text received, echo : " + text, FB_TOKEN)
             continue
-    return HTTP_OK
+    return json.dumps(None,200,{'ContentType' : 'application/json'})
+
 
 
 #FACEBOOK PART
