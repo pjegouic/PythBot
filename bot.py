@@ -1,4 +1,3 @@
-#from wit import Wit
 from flask import Flask,request, make_response
 import logging
 import requests
@@ -34,6 +33,8 @@ def webhook_post():
             text = event['message']['text']
             if text == 'richtext':
                 sendRichTextMessage(sender)
+            elif text == 'recast':
+                bot(text)
             else:
                 sendSimpleTextMessage(sender, "En cours de developpement. echo event.text : " + text)
         if 'postback' in event :
