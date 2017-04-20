@@ -32,8 +32,7 @@ def webhook_post():
         if 'message' in event and 'text' in event['message']:
             text = event['message']['text']
             bot_response = bot.analyse_text(sender,text)
-            fbconnector.prepare_response(sender,)
-            fbconnector.send(bot_response)
+            fbconnector.send(fbconnector.prepare_response(sender,bot_response))
         if 'postback' in event :
             text = event['postback']['payload']
             #bot.sendsendSimpleTextMessage(sender, "En cours de developpement. echo event.text : " + text)
