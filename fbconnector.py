@@ -4,33 +4,31 @@ import requests
 import json
 import sys, os
 
-class fbconnector:
-    def __init__(self):
-        self.FB_TOKEN = 'EAAD7Jwopoh4BAJ20sPZCt9ZC2Pl7ZCQmZAcVjRKBGs26g4v8uS26hymdknQwv4PBQOjn8ZAKX93lCVpuWulMnmzMtUdhn3puUpnT0iCZCra3H8RgBdN7UZBvBcE7jtPurDn9tsPvkH93I3aM3MWyXRA08IR6imLm48QHhanAB3PhwZDZD'
-        self.fb_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' + self.FB_TOKEN
-        self.HEADER = {'ContentType' : 'application/json'}
+FB_TOKEN = 'EAAD7Jwopoh4BAJ20sPZCt9ZC2Pl7ZCQmZAcVjRKBGs26g4v8uS26hymdknQwv4PBQOjn8ZAKX93lCVpuWulMnmzMtUdhn3puUpnT0iCZCra3H8RgBdN7UZBvBcE7jtPurDn9tsPvkH93I3aM3MWyXRA08IR6imLm48QHhanAB3PhwZDZD'
+fb_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' + self.FB_TOKEN
+HEADER = {'ContentType' : 'application/json'}
 
-    def prepare_response(self,recipient_id, message):
-        payload = {
-            'recipient' : {'id' : recipient_id}
-            }
-        message = {
-            'text' : message
+def prepare_response(recipient_id, message):
+    payload = {
+        'recipient' : {'id' : recipient_id}
         }
-        payload.message = message
-        return payload
+    message = {
+        'text' : message
+    }
+    payload.message = message
+    return payload
 
-    def parse_from_facebook(self,body):
-        return json.loads(body)
+def parse_from_facebook(body):
+    return json.loads(body)
 
-    def send(self,json):
-        try:
-            response = requests.post(self.fb_url, headers=self.HEADER, json=json)
-            sys.stdout.write(str(response.text))
-        except requests.exceptions.RequestException as e:
-            sys.stderr.write(('Error sending message : ' + e))
+def send(json):
+    try:
+        response = requests.post(self.fb_url, headers=self.HEADER, json=json)
+        sys.stdout.write(str(response.text))
+    except requests.exceptions.RequestException as e:
+        sys.stderr.write(('Error sending message : ' + e))
 
-    def sendRichTextMessage(self,sender):
+def sendRichTextMessage(sender):
         messagedata = {
             'attachment': {
                 'type': 'template',

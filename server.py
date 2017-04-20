@@ -10,7 +10,7 @@ import fbconnector
 
 # Definition des constantes
 app = Flask(__name__)
-FB = fbconnector()
+
 
 @app.route ('/webhooks/', methods=['GET'])
 def webhook_get():
@@ -22,7 +22,7 @@ def webhook_get():
 
 @app.route('/webhooks', methods=['POST'])
 def webhook_post():
-    req = FB.parse_from_facebook(request.data)
+    req = fbconnector.parse_from_facebook(request.data)
     messaging_events = req['entry'][0]['messaging']
     for i in range(len(messaging_events)):
         event = req['entry'][0]['messaging'][i]
@@ -32,7 +32,8 @@ def webhook_post():
         if 'message' in event and 'text' in event['message']:
             text = event['message']['text']
             bot_response = bot.analyse_text(sender,text)
-            FB.send(bot_response)
+            fbconnector.prepare_response(sender,)
+            fbconnector.send(bot_response)
         if 'postback' in event :
             text = event['postback']['payload']
             #bot.sendsendSimpleTextMessage(sender, "En cours de developpement. echo event.text : " + text)
