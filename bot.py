@@ -30,9 +30,6 @@ def webhook_post():
         sender = event['sender']['id']
         if event['message'] and event['message']['text']:
             text = event['message']['text']
-            if text == 'Generic' :
-                sys.stderr.write('Welcome to PythBot')
-                continue
             sendTextMessage(sender, "Text received, echo : " + text)
         if 'postback' in event :
             text = json.loads(event.postback)
