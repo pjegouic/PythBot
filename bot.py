@@ -34,7 +34,7 @@ def webhook_post():
             if text == 'richtext':
                 sendRichTextMessage(sender)
             elif text == 'recast':
-                bot(text)
+                recast(text)
             else:
                 sendSimpleTextMessage(sender, "En cours de developpement. echo event.text : " + text)
         if 'postback' in event :
