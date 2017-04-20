@@ -5,7 +5,7 @@ import json
 import sys, os
 
 FB_TOKEN = 'EAAD7Jwopoh4BAJ20sPZCt9ZC2Pl7ZCQmZAcVjRKBGs26g4v8uS26hymdknQwv4PBQOjn8ZAKX93lCVpuWulMnmzMtUdhn3puUpnT0iCZCra3H8RgBdN7UZBvBcE7jtPurDn9tsPvkH93I3aM3MWyXRA08IR6imLm48QHhanAB3PhwZDZD'
-fb_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' + self.FB_TOKEN
+fb_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' + FB_TOKEN
 HEADER = {'ContentType' : 'application/json'}
 
 def prepare_response(recipient_id, message):
@@ -23,7 +23,7 @@ def parse_from_facebook(body):
 
 def send(json):
     try:
-        response = requests.post(self.fb_url, headers=self.HEADER, json=json)
+        response = requests.post(fb_url, headers=HEADER, json=json)
         sys.stdout.write(str(response.text))
     except requests.exceptions.RequestException as e:
         sys.stderr.write(('Error sending message : ' + e))
@@ -62,7 +62,7 @@ def sendRichTextMessage(sender):
         }
         json = {'recipient' : {'id':sender}, 'message': messagedata}
         try:
-            response = requests.post(self.fb_url, headers=self.HEADER, json=json)
+            response = requests.post(fb_url, headers=HEADER, json=json)
         except requests.HTTPError as e:
             sys.stderr.write(('Error sending message : ' + e))
             sys.stderr.close
