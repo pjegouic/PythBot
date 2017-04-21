@@ -41,7 +41,7 @@ def webhook_post():
 
 @app.route('/', methods=['POST'])
 def recast_connector():
-    bot(request)
+    return bot(request)
 
 
 if __name__ == '__main__':
