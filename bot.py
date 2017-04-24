@@ -1,8 +1,10 @@
 import recastai
 from flask import jsonify
+import json
 import requests
 import httplib, urllib, base64
 from itertools import izip
+from random import randint
 
 # RECAST.AI PART
 
@@ -26,12 +28,13 @@ def bot(payload):
     response = request.converse_text(message.content, conversation_token=message.sender_id)
     # TRAITEMENT SEARCH_IMAGE WHEN IMAGE_CATEGORY FOUND
     if str(response.action.slug) == 'search_image' and response.action.done is True :
-        reply_text = [{'type': 'text', 'content': response.action.reply}]        
-        reply_image = [{'type': 'picture', 'content': 'https://imgflip.com/s/meme/Troll-Face.jpg'}]
+        reply_text = [{'type': 'text', 'content': response.action.reply}]    
         connect.send_message(reply_text, message.conversation_id)
-        connect.send_message(reply_image, message.conversation_id)
         image_category = extract_memory(response.memory,"image_category")
-        images = retrieve_image(image_category)
+        print image_category
+        image_url = retrieve_image(image_category)
+        reply_image = [{'type': 'picture', 'content': image_url}]
+        connect.send_message(reply_image, message.conversation_id)
     else : 
         print ('RECAST RESPONSE : ' + response.raw.encode('utf-8'))
         content = 'SLUG : ' + response.action.slug + '\n' + 'DONE : ' + str(response.action.done) + '\n' + 'BOTREPLY : ' + response.action.reply
@@ -52,10 +55,11 @@ def retrieve_image(category):
         conn.request("POST", "/bing/v5.0/images/search?q=" + str(category), "{body}", headers)
         response = conn.getresponse()
         data = response.read()
+        images = json.loads(data)
         conn.close()
-        data = dict(data)
-        print data.value
-        return data['value'][0]['thumbnailUrl']
+        random_index = randint(0,len(images['value'])-1)
+        print images['value'][random_index]['thumbnailUrl']
+        return images['value'][random_index]['thumbnailUrl']
 
     except Exception as e:
         print e
