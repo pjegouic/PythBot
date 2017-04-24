@@ -5,75 +5,77 @@ import requests
 import httplib, urllib, base64
 from itertools import izip
 from random import randint
+import searchimage
 
 # RECAST.AI PART
 
 RECAST_TOKEN = 'cfb4bbd5e7c87e8a7c12a07d28f4a797'
 LANGUAGE = 'fr'
 
-def analyse_text(sender,payload):
-    request = recastai.Request(token=RECAST_TOKEN)
-    response = request.analyse_text(payload)
-    return response.raw
+class PythBot:
+    def __init__(self):
+        self.request = recastai.Request(token=RECAST_TOKEN, language='fr')
 
-def converse(sender,payload):
-    request = recastai.Request(token=RECAST_TOKEN)
-    response = request.converse_text(payload)
-    return response.raw
+    def analyse_text(self,sender,payload):
+        return self.request.analyse_text(payload).raw
 
-def bot(payload):
-    connect = recastai.Connect(token=RECAST_TOKEN, language='fr')
-    request = recastai.Request(token=RECAST_TOKEN)
-    message = connect.parse_message(payload)
-    response = request.converse_text(message.content, conversation_token=message.sender_id)
-    # TRAITEMENT SEARCH_IMAGE WHEN IMAGE_CATEGORY FOUND
-    if str(response.action.slug) == 'search_image' and response.action.done is True :
-        reply_text = [{'type': 'text', 'content': response.action.reply}]    
-        connect.send_message(reply_text, message.conversation_id)
-        image_category = extract_memory(response.memory,"image_category")
-        print image_category
-        image_url = retrieve_image(image_category)
-        reply_image = [{'type': 'picture', 'content': image_url}]
-        connect.send_message(reply_image, message.conversation_id)
-    else : 
-        print ('RECAST RESPONSE : ' + response.raw.encode('utf-8'))
-        content = 'SLUG : ' + response.action.slug + '\n' + 'DONE : ' + str(response.action.done) + '\n' + 'BOTREPLY : ' + response.action.reply
-        replies = [{'type': 'text', 'content': content}]
-        print('Conversation.id : ' + message.conversation_id)
-        connect.send_message(replies, message.conversation_id)
-    return jsonify(status=201)
+    def converse(self,sender,payload):
+        return self.request.converse_text(payload)
 
+    def brain(self, senderid, query):
+        # Envoi du message a Recast.ai pour analyse
+        response = self.request.converse_text(query, conversation_token=senderid)
+        resp = []
+        ###############################################
+        # PythBot Brain - Traitement retour Recast.ai #
+        ###############################################
+        if response.action.slug and response.action.reply:
+            #########################
+            # Intent : search_image #
+            #########################
+            if str(response.action.slug) == 'search_image':
+            ###############
+            # Intent Done #
+            ###############
+                if  response.action.done is True :
+                    # Preparation du contenu de la reponse textuelle
+                    reply_text = [{'type': 'text', 'content': None}]
+                    reply_text[0]['content'] = response.action.reply
+                    resp.insert(0,reply_text)
+                    # Preparation recherche image
+                    image_category = self.extract_memory(response.memory,"image_category")
+                    images_response = searchimage.retrieve_image(image_category)
+                    i = 1
+                    for item in images_response:
+                        reply_image = [{'type': 'picture', 'content': None}]
+                        reply_image[0]['content'] = item
+                        resp.insert(i,reply_image)
+                        i = i +1  
+                #############
+                # Continue  #
+                #############
+                else : 
+                    # Preparation contenu de la reponse textuelle
+                    reply_text = [{'type': 'text', 'content': None}]
+                    reply_text[0]['content'] = response.action.reply
+                    resp.insert(0,reply_text)
+            else:
+                print 'RECAST RESPONSE : '
+                print response.raw
+                reply_text = [{'type': 'text', 'content': None}]
+                reply_text[0]['content'] = response.action.reply
+                resp.insert(0,reply_text)
+        return resp
 
-def retrieve_image(category):
-    headers = {
-    # Request headers
-    'Content-Type': 'multipart/form-data',
-    'Ocp-Apim-Subscription-Key': '1581c54df3aa43d08c2aab6bf027d799',
-    }
-    try:
-        conn = httplib.HTTPSConnection('api.cognitive.microsoft.com')
-        conn.request("POST", "/bing/v5.0/images/search?q=" + str(category), "{body}", headers)
-        response = conn.getresponse()
-        data = response.read()
-        images = json.loads(data)
-        conn.close()
-        random_index = randint(0,len(images['value'])-1)
-        print images['value'][random_index]['thumbnailUrl']
-        return images['value'][random_index]['thumbnailUrl']
-
-    except Exception as e:
-        print e
-
-
-def extract_memory(memory, target):
-    for item in memory :
-        item = str(item)
-        if item.find(target) != -1 :
-            start = item.find("value=") + len("value=")
-            end = len(item) - 1
-            return item[start:end]
-        else:
-            return None
+    def extract_memory(self, memory, target):
+        for item in memory :
+            item = str(item)
+            if item.find(target) != -1 :
+                start = item.find("value=") + len("value=")
+                end = len(item) - 1
+                return item[start:end]
+            else:
+                return None
 
 
     
