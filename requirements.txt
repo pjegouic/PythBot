@@ -2,3 +2,20 @@ Flask == 0.11
 requests == 2.13.0
 recastai == 3.0.0
 
+{
+	'message': {
+		'attachment': {
+			'type': 'template',
+			'payload': {
+				'template_type': 'generic',
+				'elements': [{
+					'image_url': u "Ok, mais dis moi ce que je dois t'afficher !",
+					'title': 'Template'
+				}]
+			}
+		}
+	},
+	'recipient': {
+		'id': u '1332926080122491'
+	}
+}

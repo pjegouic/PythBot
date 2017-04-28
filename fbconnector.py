@@ -6,8 +6,10 @@ import json
 from bot import PythBot
 import sys, os
 
-FB_TOKEN = 'EAAD7Jwopoh4BAJcCi5IGh0eqBRkvZBcCds2MF6ONiwHPFFBZAY7nqHCKd5DR7PEUX1kNKmNUGix9qLHVjDa3QZAGZCoymt0oWRhz1xe4rRSIZAwJf3HmgiUASCr4MBt5zZBZA3gjGXwrcwahuHWwiZCsQwjtviLwOKU65MyFKKtxlQZDZD'
+FB_TOKEN = 'EAAD7Jwopoh4BABvQUTFt8tYy3JjwTc4t0Tq8pIiIoJn64seN3b6LzVdRDPaXwaEJhdMmBngpmB9eN9lQwGNXqk4KAtt1OlVvZCtgekK5K1BFcNgYcjKZAdrTCes5VyQ3ZACZAZCXZCSgQTRVkYmSJALR2GJ6AguFboFhL7zCK5SAZDZD'
 fb_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' + FB_TOKEN
+MICROSOFT_KEY_SPEAKER_RECOGNITION = '2be62cc6ed1d4cee9562a893ffa6cb53'
+ID_USER_SPEAKER = '1b2ff4a9-1a79-47b8-a8cf-316f22f0e973'
 HEADER = {'ContentType' : 'application/json'}
 # Definition des constantes
 # Definition des constantes
@@ -71,22 +73,23 @@ def webhook_get():
 def webhook_post():
     try:
         fb_input = fbconnector_request_adapter(request.data)
-        if fb_input is not None:
+        print fb_input
+        if fb_input is not None and 'query' in fb_input:
             bot = PythBot()
             response = bot.brain(fb_input['sender'] , fb_input['query'])
             if len(response) > 1:
-                print 'SUBLIST RESPONSE'
-                print response[1:(len(response)-1)]
                 sendMessage(fb_input['sender'], response[0])
                 sendWithGenericTemplate(fb_input['sender'], response[1:(len(response))])
                 return json.dumps(None,200,{'ContentType' : 'application/json'})
             elif len(response) == 1:
-                print 'len == 1 condition'
-                print response
                 sendMessage(fb_input['sender'],response[0])
                 return json.dumps(None,200,{'ContentType' : 'application/json'})
             else:
                 return json.dumps(None,200,{'ContentType' : 'application/json'})
+        elif fb_input is not None and 'audio' in fb_input:
+            print 'LOOOOP N2'
+            execfile('Identification/EnrollProfile.py ' + MICROSOFT_KEY_SPEAKER_RECOGNITION + ' ' + ID_USER_SPEAKER)
+            return json.dumps(None,200,{'ContentType' : 'application/json'})
         else:
             return json.dumps(None,200,{'ContentType' : 'application/json'})
     except Exception as e:
@@ -102,13 +105,16 @@ def fbconnector_request_adapter(payload):
     for i in range(len(mess_events)):
         message = request['entry'][0]['messaging'][i]
         sender = message['sender']['id']
-        if 'message' in message and 'text' in message['message']:
+        if 'attachments' in message['message']:
+            return{ 'audio' : message['message']['attachments'][0]['payload']['url'] , 'sender' : sender}
+        elif 'message' in message and 'text' in message['message']:
             return {'query' : message['message']['text'], 'sender' : sender}
         elif 'postback' in message :
             #Todo Postback Management
             return None
         else:
             return None
+
 
 def fbconnector_response_adapter(payload):
     return None
@@ -117,5 +123,5 @@ def fbconnector_response_adapter(payload):
 
 if __name__ == '__main__':
     #port = os.environ['PORT']
-    port = 8000
+    port = 6000
     app.run(host='0.0.0.0', port=port)

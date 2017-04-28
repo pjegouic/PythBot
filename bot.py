@@ -33,10 +33,14 @@ class PythBot:
             #########################
             # Intent : search_image #
             #########################
-            if str(response.action.slug) == 'search_image':
-            ###############
-            # Intent Done #
-            ###############
+            if str(response.action.slug) == 'greetings':
+                reply_text = [{'type': 'text', 'content': None}]
+                reply_text[0]['content'] = response.action.reply
+                resp.insert(0,reply_text)
+            elif str(response.action.slug) == 'search_image':
+                ###############
+                # Intent Done #
+                ###############
                 if  response.action.done is True :
                     # Preparation du contenu de la reponse textuelle
                     reply_text = [{'type': 'text', 'content': None}]
@@ -59,7 +63,27 @@ class PythBot:
                     reply_text = [{'type': 'text', 'content': None}]
                     reply_text[0]['content'] = response.action.reply
                     resp.insert(0,reply_text)
-            else:
+            ##################
+            # Intent : order #
+            ##################
+            elif str(response.action.slug) == 'order':
+                ###############
+                # Intent Done #
+                ###############
+                if  response.action.done is True :
+                    # Preparation du contenu de la reponse textuelle
+                    reply_text = [{'type': 'text', 'content': None}]
+                    reply_text[0]['content'] = response.action.reply
+                    resp.insert(0,reply_text)
+                #############
+                # Continue  #
+                #############
+                else : 
+                    # Preparation contenu de la reponse textuelle
+                    reply_text = [{'type': 'text', 'content': None}]
+                    reply_text[0]['content'] = response.action.reply
+                    resp.insert(0,reply_text)
+        else:
                 print 'RECAST RESPONSE : '
                 print response.raw
                 reply_text = [{'type': 'text', 'content': None}]
